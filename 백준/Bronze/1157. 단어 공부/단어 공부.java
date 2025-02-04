@@ -1,50 +1,39 @@
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.Map.Entry;
 
 public class Main {
 
-	public static void main(String[] args) {
-		
-		Scanner scan = new Scanner(System.in);
-		Map<String, Integer> word = new HashMap<>();
-		
-		String S = scan.next().toUpperCase();
-	
-		String str = "";
-		
-		for(int i = 0; i < S.length(); i++) {
-			str = "";
-			str += S.charAt(i);
-			
-				if(word.containsKey(str)) {
-					Integer value = word.get(str);
-					value += 1;
-					word.put(str, value);
-				} else {
-					word.put(str, 1);
-				}
-		}
-		
-		int max = 0;
-		int cnt = 0;
-		String name = "";
-		
-		Set<Entry<String, Integer>> entrySet = word.entrySet();
-		for(Entry<String, Integer> entry : entrySet) {
-			if(max < entry.getValue()) {
-				max = entry.getValue();
-				name = entry.getKey();
-			} else if (max == entry.getValue()) {
-				name = "?";
-			}
-		}
-		System.out.println(name);
+    public static void main(String[] args) {
 
-	}
+        Scanner scan = new Scanner(System.in);
+        Map<Character, Integer> word = new HashMap<>();
+        
+        String S = scan.next().toUpperCase();
+
+        for (int i = 0; i < S.length(); i++) {
+            char c = S.charAt(i);
+            word.put(c, word.getOrDefault(c, 0) + 1);
+        }
+
+        int max = 0;
+        int count = 0;
+        char result = '?';
+
+        for (Map.Entry<Character, Integer> entry : word.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                result = entry.getKey();
+                count = 1;  // 새로운 최대값이 나오면 카운트를 1로 초기화
+            } else if (entry.getValue() == max) {
+                count++;  // 같은 최대값을 가진 문자가 있으면 카운트 증가
+            }
+        }
+
+        if (count > 1) {
+            result = '?';  // 최대값을 가진 문자가 여러 개 있으면 '?'
+        }
+
+        System.out.println(result);
+    }
 }
